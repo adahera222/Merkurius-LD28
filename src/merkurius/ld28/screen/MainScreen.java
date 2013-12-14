@@ -1,5 +1,8 @@
-package merkurius.ld28;
+package merkurius.ld28.screen;
 
+import java.util.Random;
+
+import merkurius.ld28.EntityFactoryLD28;
 import fr.kohen.alexandre.framework.base.GameScreen;
 import fr.kohen.alexandre.framework.systems.DefaultBox2DSystem;
 import fr.kohen.alexandre.framework.systems.DefaultCameraSystem;
@@ -31,8 +34,14 @@ public class MainScreen extends GameScreen {
 	
 	@Override
 	protected void initialize() {
-		EntityFactoryLD28.newWall(world, 1, 0, 0, 10, 10);
-		EntityFactoryLD28.newCamera(world, 1, 0, 0, 0, 0, 0, 640, 480, 0, "cameraWorld1").addToWorld();
+		Random rand = new Random();
+		EntityFactoryLD28.newWall(world, 1, 0, 0, 10, 10).addToWorld();
+		EntityFactoryLD28.newWall(world, 1, rand.nextInt(50), rand.nextInt(50), 23, 23).addToWorld();
+		EntityFactoryLD28.newWall(world, 1, rand.nextInt(50), rand.nextInt(50), 23, 23).addToWorld();
+		
+		EntityFactoryLD28.newPlayer(world, 1, 50, 50).addToWorld();
+		
+		EntityFactoryLD28.newCamera(world, 1, 0, 0, 0, 0, 0, 800, 600, 0, "cameraWorld1").addToWorld();
 	}
 
 

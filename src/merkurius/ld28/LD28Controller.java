@@ -1,5 +1,6 @@
 package merkurius.ld28;
 
+import merkurius.ld28.screen.MainScreen;
 import fr.kohen.alexandre.framework.base.GameController;
 
 
