@@ -23,7 +23,8 @@ public class LD28ShootingSystem extends EntityProcessingSystem implements RayCas
     protected ComponentMapper<Transform> 	transformMapper;
     protected ComponentMapper<Velocity>     velocityMapper;
 	protected PhysicsSystem physicsSystem;
-	private Raycast raycast;
+	private Entity lastEntity = null;
+	private Vector2 lastHit = null;
 
     @SuppressWarnings("unchecked")
 	public LD28ShootingSystem() {
@@ -43,48 +44,63 @@ public class LD28ShootingSystem extends EntityProcessingSystem implements RayCas
         shooterMapper.get(e).decrementTimer((int) (world.getDelta()*1000));
         
         if (shooterMapper.get(e).isShooting() && shooterMapper.get(e).canShoot()) {
-        	
-        	if( shooterMapper.get(e).weapon == WEAPON.NAILGUN ) {
-        		Vector2 vector = new Vector2(0,1000);
-        		vector.setAngle(shooterMapper.get(e).getAim());
-        		raycast = new Raycast();
-        		physicsSystem.raycast(1, this, transformMapper.get(e).getPosition2(), transformMapper.get(e).getPosition2().cpy().add(vector));
-        		if( raycast.lastEntity != null ) {
-        			Entity bullet = EntityFactoryLD28.newBullet( world, 1, raycast.lastHit.x, raycast.lastHit.y, 1000, 0);
-        	        bullet.addToWorld();
-        		}
-        		shooterMapper.get(e).setTimer(WEAPON.NAILGUN.reload);
-                shooterMapper.get(e).setShooting(false);
-        	} else if( shooterMapper.get(e).weapon == WEAPON.SYRINGE )  {
-        		Vector2 vector = new Vector2(0,20);
-        		vector.setAngle(shooterMapper.get(e).getAim());
-        		Vector2 bulletPosition = transformMapper.get(e).getPosition2().cpy().add(vector);
-                Entity bullet = EntityFactoryLD28.newBullet( world, 1, bulletPosition.x, bulletPosition.y, 1000, e.getId() );
-                bullet.addToWorld();
-                vector.set(0, WEAPON.SYRINGE.speed).setAngle(shooterMapper.get(e).getAim());
-                velocityMapper.get(bullet).setSpeed(vector);
-                shooterMapper.get(e).setTimer(WEAPON.SYRINGE.reload);
-                shooterMapper.get(e).setShooting(false);
-        	}
-            
+        	shoot(e, shooterMapper.get(e).weapon);
+        	cooldown(e, shooterMapper.get(e).weapon);
         }
     }
+
+	
+
+	private void shoot(Entity e, WEAPON weapon) {
+		switch(weapon) {
+		
+		case NAILGUN:
+			Vector2 endPoint = new Vector2(0, WEAPON.NAILGUN.range);
+			endPoint.setAngle( shooterMapper.get(e).getAim() );
+			endPoint.add( transformMapper.get(e).getPosition2() );
+			lastEntity = null;
+			lastHit = null;
+    		physicsSystem.raycast( 1, this, transformMapper.get(e).getPosition2(), endPoint );
+    		if( lastEntity != null ) {
+    			Entity bullet = EntityFactoryLD28.newBullet( world, 1, lastHit.x, lastHit.y, 1000, 0 );
+    	        bullet.addToWorld();
+    		}
+			break;
+			
+		case SYRINGE:
+			Vector2 bulletPosition = new Vector2(0,20);
+			bulletPosition.setAngle( shooterMapper.get(e).getAim() );
+    		bulletPosition.add( transformMapper.get(e).getPosition2() );
+            Entity bullet = EntityFactoryLD28.newBullet( world, 1, bulletPosition.x, bulletPosition.y, WEAPON.SYRINGE.range, e.getId() );
+            bullet.addToWorld();
+            Vector2 bulletSpeed = new Vector2( 0, WEAPON.SYRINGE.speed );
+            bulletSpeed.setAngle( shooterMapper.get(e).getAim() );
+            velocityMapper.get(bullet).setSpeed(bulletSpeed);
+			break;
+			
+		case RING:
+		case BAT:
+		case MINE:
+		case ACID:
+		default:
+			break;
+		}
+	}
+	
+	
+	private void cooldown(Entity e, WEAPON weapon) {
+		shooterMapper.get(e).setTimer(weapon.reload);
+        shooterMapper.get(e).setShooting(false);
+	}
 
 	@Override
 	public float reportRayFixture(Fixture fixture, Vector2 point, Vector2 normal, float fraction) {
 		if( fixture.isSensor() ) {
 			return -1;
-		} else if( raycast.lastFraction > fraction) {
-        	raycast.lastEntity = (Entity) fixture.getBody().getUserData();
-        	raycast.lastFraction = fraction;
-        	raycast.lastHit = point.cpy();
+		} else {
+        	lastEntity = (Entity) fixture.getBody().getUserData();
+        	lastHit = point.cpy();
         }
-		return 1;
-	}
-	
-	private class Raycast {
-		public float lastFraction = 1;
-		public Entity lastEntity = null;
-		public Vector2 lastHit = null;
+		return fraction;
 	}
 }

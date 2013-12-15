@@ -32,17 +32,17 @@ public class MainScreen extends GameScreen {
 	
 	@Override
 	protected void setSystems() {
-		world.setSystem( new DefaultCameraSystem() );
 		world.setSystem( new DefaultRenderSystem() );
 		world.setSystem( new DefaultVisualSystem(EntityFactoryLD28.visuals) );
 		world.setSystem( new ScaledBox2DSystem(CONST.SCALE) );	
 		world.setSystem( new DefaultExpirationSystem() );
-		world.setSystem( new DefaultDebugSystem() );
 		world.setSystem( new DefaultMouseSystem() );
 		world.setSystem( new LD28MapSystem() );
 		world.setSystem( new LD28InputSystem() );
 		world.setSystem( new LD28PlayerSystem() );
 		world.setSystem( new LD28ShootingSystem() );
+		world.setSystem( new DefaultCameraSystem() );
+		world.setSystem( new DefaultDebugSystem() );
 		//world.setSystem( new DefaultControlSystem(50) );
 		
 		/*if( isServer ) {
@@ -60,6 +60,7 @@ public class MainScreen extends GameScreen {
 		
 		EntityFactoryLD28.newMap(world, 1, "data/map1.tmx", -500, -400).addToWorld();
 		EntityFactoryLD28.newCamera(world, 1, 0, 0, 0, 0, 0, 800, 600, 0, "cameraFollowPlayer").addToWorld();
+		//EntityFactoryLD28.newCamera(world, 1, 0, 0, 0, -200, -150, 4, 3, 0, "cameraFollowPlayer").addToWorld();
 		
 
 		if ( isServer ) {

@@ -56,7 +56,6 @@ public static Map<String, Action> actions = new HashMap<String, Action>();
 	public static Entity newPlayer(World world, int mapId, float x, float y) {
 		Entity e = newActor(world, mapId, x, y);
 		world.getManager(TagManager.class).register("player", e);
-		
 		e.addComponent( new Player() );
 		return e;
 	}

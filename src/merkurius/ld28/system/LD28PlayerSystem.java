@@ -8,16 +8,17 @@ import merkurius.ld28.component.Shooter;
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
-import com.artemis.managers.TagManager;
 import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.math.Vector2;
 
 import fr.kohen.alexandre.framework.base.KeyBindings;
+import fr.kohen.alexandre.framework.base.Systems;
 import fr.kohen.alexandre.framework.components.CameraComponent;
 import fr.kohen.alexandre.framework.components.Mouse;
 import fr.kohen.alexandre.framework.components.Player;
 import fr.kohen.alexandre.framework.components.Transform;
+import fr.kohen.alexandre.framework.systems.interfaces.CameraSystem;
 
 
 public class LD28PlayerSystem extends EntityProcessingSystem implements PlayerSystem {
@@ -37,6 +38,7 @@ public class LD28PlayerSystem extends EntityProcessingSystem implements PlayerSy
     private Mouse mouseComponent;
     private Transform mouseTransform;
     private int playerId = -1;
+	private CameraSystem cameraSystem;
 
     @SuppressWarnings("unchecked")
     public LD28PlayerSystem() {
@@ -55,6 +57,8 @@ public class LD28PlayerSystem extends EntityProcessingSystem implements PlayerSy
         playerMapper   	= ComponentMapper.getFor(Player.class, world);
         inputMapper   	= ComponentMapper.getFor(Input.class, world);
         
+        cameraSystem	= Systems.get(CameraSystem.class, world);
+        
         KeyBindings.addKey(Keys.LEFT, "move_left");
 		KeyBindings.addKey(Keys.RIGHT, "move_right");
 		KeyBindings.addKey(Keys.UP, "move_up");
@@ -69,7 +73,7 @@ public class LD28PlayerSystem extends EntityProcessingSystem implements PlayerSy
     @Override
     protected void begin(){
         if (mouse == null){
-            mouse = world.getManager(TagManager.class).getEntity("cameraFollowPlayer").getComponent(CameraComponent.class).mouse;
+        	mouse = cameraSystem.getCameras().get(0).getComponent(CameraComponent.class).mouse;
             mouseComponent = mouse.getComponent(Mouse.class);
             mouseTransform = mouse.getComponent(Transform.class);
         }
