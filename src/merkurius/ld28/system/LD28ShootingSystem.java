@@ -26,7 +26,7 @@ public class LD28ShootingSystem extends EntityProcessingSystem implements RayCas
 	protected PhysicsSystem physicsSystem;
 	private Entity lastEntity = null;
 	private Vector2 lastHit = null;
-	private DamageSystem damageSystem;
+	private ActorSystem actorSystem;
 
     @SuppressWarnings("unchecked")
 	public LD28ShootingSystem() {
@@ -39,7 +39,7 @@ public class LD28ShootingSystem extends EntityProcessingSystem implements RayCas
         shooterMapper   = ComponentMapper.getFor(Shooter.class, world);
         velocityMapper  = ComponentMapper.getFor(Velocity.class, world);
         physicsSystem	= Systems.get(PhysicsSystem.class, world);
-        damageSystem	= Systems.get(DamageSystem.class, world);
+        actorSystem	= Systems.get(ActorSystem.class, world);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class LD28ShootingSystem extends EntityProcessingSystem implements RayCas
     		if( lastEntity != null ) {
     			Entity bullet = EntityFactoryLD28.newNailgunImpact( world, 1, lastHit.x, lastHit.y, 500, 0 );
     	        bullet.addToWorld();
-    	        damageSystem.dealDamage(e, lastEntity, weapon);
+    	        actorSystem.dealDamage(e, lastEntity, weapon);
     		}
 			break;
 			

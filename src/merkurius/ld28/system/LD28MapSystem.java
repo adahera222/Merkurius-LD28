@@ -12,10 +12,14 @@ import fr.kohen.alexandre.framework.systems.DefaultMapSystem;
 public class LD28MapSystem extends DefaultMapSystem {
 	
 	protected void checkTile(int x, int y, TiledMapTileLayer layer, int mapId) {
-		if ( layer.getCell(x, y) != null ) {
-			Entity map = maps.get(mapId);
-			EntityFactoryLD28.newWall(world, mapId, 16+x*32+transformMapper.get(map).getPosition().x, 16+y*32+transformMapper.get(map).getPosition().y, 32, 32).addToWorld();
+		
+		if( layer.getName().equalsIgnoreCase("collision") ) {
+			if ( layer.getCell(x, y) != null ) {
+				Entity map = maps.get(mapId);
+				EntityFactoryLD28.newWall(world, mapId, 8+x*16+transformMapper.get(map).getPosition().x, 8+y*16+transformMapper.get(map).getPosition().y, 16, 16).addToWorld();
+			}
 		}
+		
 	}
 	
 	protected void checkObject(MapObject object, TiledMapTileLayer layer, int mapId) {

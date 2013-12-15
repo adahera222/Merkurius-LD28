@@ -3,8 +3,7 @@ package merkurius.ld28.model;
 import merkurius.ld28.CONST.WEAPON;
 import merkurius.ld28.component.Bullet;
 import merkurius.ld28.component.Health;
-import merkurius.ld28.system.DamageSystem;
-
+import merkurius.ld28.system.ActorSystem;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.World;
@@ -22,14 +21,14 @@ public class BulletAction implements Action {
 	private ComponentMapper<Health> healthMapper;
 	private ComponentMapper<PhysicsBodyComponent> bodyMapper;
 	private ComponentMapper<Bullet> bulletMapper;
-	private DamageSystem damageSystem;
+	private ActorSystem actorSystem;
 	
 	public void initialize(World world) {
 		parentMapper 	= ComponentMapper.getFor(Parent.class, world);
 		healthMapper 	= ComponentMapper.getFor(Health.class, world);
 		bodyMapper 		= ComponentMapper.getFor(PhysicsBodyComponent.class, world);
 		bulletMapper 	= ComponentMapper.getFor(Bullet.class, world);
-		damageSystem	= Systems.get(DamageSystem.class, world);
+		actorSystem	= Systems.get(ActorSystem.class, world);
 		
 		this.world 	= world;
 	}
@@ -50,7 +49,7 @@ public class BulletAction implements Action {
 	@Override
 	public void preSolve(Entity e, Entity other, Contact contact) {
 		if( healthMapper.has(other) ) {
-			damageSystem.dealDamage( world.getEntity( parentMapper.get(e).getParentId() ), other, bulletMapper.get(e).weapon );
+			actorSystem.dealDamage( world.getEntity( parentMapper.get(e).getParentId() ), other, bulletMapper.get(e).weapon );
 			e.deleteFromWorld();
 		} else if( bulletMapper.get(e).weapon == WEAPON.SYRINGE ){
 			bodyMapper.get(e).getBody().setLinearVelocity(0, 0);

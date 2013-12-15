@@ -1,6 +1,7 @@
 package merkurius.ld28.screen;
 
 import merkurius.ld28.EntityFactoryLD28;
+import merkurius.ld28.system.LD28ServerListSystem;
 import fr.kohen.alexandre.framework.base.GameScreen;
 import fr.kohen.alexandre.framework.systems.DefaultActionSystem;
 import fr.kohen.alexandre.framework.systems.DefaultBox2DSystem;
@@ -12,7 +13,7 @@ import fr.kohen.alexandre.framework.systems.DefaultScreenSystem;
 import fr.kohen.alexandre.framework.systems.DefaultTextSystem;
 import fr.kohen.alexandre.framework.systems.DefaultVisualSystem;
 
-public class MenuScreen extends GameScreen {
+public class ServerlistScreen extends GameScreen {
 
 	@Override
 	protected void setSystems() {	
@@ -25,12 +26,11 @@ public class MenuScreen extends GameScreen {
 		world.setSystem( new DefaultVisualSystem(EntityFactoryLD28.visuals) );
 		world.setSystem( new DefaultTextSystem() );
 		world.setSystem( new DefaultDebugSystem() );
+		world.setSystem( new LD28ServerListSystem() );
 	}
 	
 	@Override
 	protected void initialize() {
-		EntityFactoryLD28.newServerButton(world, 1, 0, 100).addToWorld();
-		EntityFactoryLD28.newServerlistButton(world, 1, 0, -100).addToWorld();
 		EntityFactoryLD28.newCamera(world, 1, 0, 0, 0, 0, 0, 800, 600, 0, "testCamera").addToWorld();
 	}
 

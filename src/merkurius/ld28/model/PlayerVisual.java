@@ -11,7 +11,7 @@ public class PlayerVisual extends Visual {
    
 	public PlayerVisual(int playerId) {
 		Texture.setEnforcePotImages(false);
-		Texture sheet = new Texture(Gdx.files.internal("data/LD28.png"));
+		Texture sheet = new Texture(Gdx.files.internal("data/persos.png"));
 		
 		TextureRegion[][] tmp = TextureRegion.split( sheet, 32, 32 );
 		

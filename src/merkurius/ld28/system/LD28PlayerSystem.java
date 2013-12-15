@@ -1,7 +1,5 @@
 package merkurius.ld28.system;
 
-import java.text.NumberFormat;
-
 import merkurius.ld28.component.Input;
 import merkurius.ld28.component.Shooter;
 
@@ -21,13 +19,7 @@ import fr.kohen.alexandre.framework.components.Transform;
 import fr.kohen.alexandre.framework.systems.interfaces.CameraSystem;
 
 
-public class LD28PlayerSystem extends EntityProcessingSystem implements PlayerSystem {
-    private static final NumberFormat NUMBER_FORMATTER = NumberFormat.getInstance();
-
-    static {
-        NUMBER_FORMATTER.setMinimumFractionDigits(1);
-        NUMBER_FORMATTER.setMaximumFractionDigits(1);
-    }
+public class LD28PlayerSystem extends EntityProcessingSystem {
 
     protected ComponentMapper<Transform> 	transformMapper;
     protected ComponentMapper<Shooter>      shooterMapper;
@@ -37,17 +29,11 @@ public class LD28PlayerSystem extends EntityProcessingSystem implements PlayerSy
     private Entity mouse;
     private Mouse mouseComponent;
     private Transform mouseTransform;
-    private int playerId = -1;
 	private CameraSystem cameraSystem;
 
     @SuppressWarnings("unchecked")
     public LD28PlayerSystem() {
         super( Aspect.getAspectForAll(Player.class, Transform.class, Shooter.class) );
-    }
-    
-    public LD28PlayerSystem(int playerId) {
-    	this();
-    	this.playerId = playerId;
     }
 
     @Override
@@ -81,37 +67,31 @@ public class LD28PlayerSystem extends EntityProcessingSystem implements PlayerSy
 
     @Override
     protected void process(Entity e) {
-    	if( playerMapper.get(e).playerId == playerId ) {
-			if (mouseComponent.clicked){
-				shooterMapper.get(e).setShooting(true);
-			} else {
-				shooterMapper.get(e).setShooting(false);
-			}
-			Vector2 direction = mouseTransform.getPosition2().cpy().sub(transformMapper.get(e).getPosition2());
-			shooterMapper.get(e).setAim(direction.angle());
-	        
-			transformMapper.get(e).setRotation(direction.angle() - 90);
-			
-	        inputMapper.get(e).input = 0;
-	        if ( KeyBindings.isKeyPressed("move_left") ) {
-	        	inputMapper.get(e).input += 1;
-			}
-			
-			if ( KeyBindings.isKeyPressed("move_right") ) {
-				inputMapper.get(e).input += 2;
-			} 
-			
-			if ( KeyBindings.isKeyPressed("move_up") ) {
-				inputMapper.get(e).input += 4;
-			}
-			
-			if ( KeyBindings.isKeyPressed("move_down") ) {
-				inputMapper.get(e).input += 8;
-			}
-    	}        
-    }
-    
-    public void setPlayerId(int playerId) {
-    	this.playerId = playerId;
+		if (mouseComponent.clicked){
+			shooterMapper.get(e).setShooting(true);
+		} else {
+			shooterMapper.get(e).setShooting(false);
+		}
+		Vector2 direction = mouseTransform.getPosition2().cpy().sub(transformMapper.get(e).getPosition2());
+		shooterMapper.get(e).setAim(direction.angle());
+        
+		transformMapper.get(e).setRotation(direction.angle() - 90);
+		
+        inputMapper.get(e).input = 0;
+        if ( KeyBindings.isKeyPressed("move_left") ) {
+        	inputMapper.get(e).input += 1;
+		}
+		
+		if ( KeyBindings.isKeyPressed("move_right") ) {
+			inputMapper.get(e).input += 2;
+		} 
+		
+		if ( KeyBindings.isKeyPressed("move_up") ) {
+			inputMapper.get(e).input += 4;
+		}
+		
+		if ( KeyBindings.isKeyPressed("move_down") ) {
+			inputMapper.get(e).input += 8;
+		}
     }
 }

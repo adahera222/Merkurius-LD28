@@ -3,6 +3,7 @@ package merkurius.ld28;
 
 public class CONST {
 	public static final float SCALE = 10;
+	public static final float MOVEMENT = 50;
 	
 	
 	

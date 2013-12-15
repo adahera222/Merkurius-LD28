@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="100" height="100" tilewidth="16" tileheight="16" backgroundcolor="#ffffff">
+ <tileset firstgid="1" name="LD28" tilewidth="16" tileheight="16">
+  <image source="LD28.png" width="800" height="600"/>
+ </tileset>
+ <tileset firstgid="1851" name="LD28" tilewidth="16" tileheight="16">
+  <image source="LD28.png" width="800" height="600"/>
+ </tileset>
+ <layer name="Collision" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJzt2UFKw0AYgNFpFT2NFBei53GhrTd14ULQ24gaoTIhpmknyeBPeA+GljYzbfqRJrQpAQAAAAAAAABz261Seqg0biqufbv670+ujuuK+/VZb+l0r0cxPcrpEUuEHm8j1taj3OWJa485jvSoR49Mj1j0iEWPWPSIJUKPs+Y9PDe3X814H9juYr/dz1hqj8dmv9atcezzWPeM19Q/99D23W0dH9kcx8fHxPl6ZHP0eJk4X49Mj1gi9BjzfafHX7/n5vPWeXoMx0cW4XpXjyxCj1N/B27TY9z/FLXoUX7ertlPj/IeU6+7hiy1x1OzX1f7sWnd73ts2/P80Nh25m8GXufY6M65W2gPAAAAAAAAAAAAAAAAAAAAAAAAAAAAiOAbY4pJ1Q==
+  </data>
+ </layer>
+ <layer name="Sols" width="100" height="100" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJzt2VFS6kAQhWF4dDdslaAoAfcqVNFle+iemaCpWJn/4asbQhKvfTI9k7h72Wx2AAAAAAAAAAAAAAAAK/a5bXeZcKzZ3+n5e7c9XB2uXq/egs83x6t3ufbStZsrD1+nqOa6Lzsm2u/zyPZr/Y/3fbq/lzxq9/75ifHTsm3XjfK41f7DfefHiX2/dO3mzqOlH42Vzy3jS0X9KcrItk8d5BH1not8Hhtqew629RzNMJsvdJ/pLY9an5ly77doycP3sF7ysPu2lIP2tUvhOD93P5NHtL7qKY/aPOL7mM7xLWNJ88nm88Fl0HMerXN6C7vOKPuisRLlUVpzrT2PqTlE4+OZrGysZM8f0Rq3lzx8fXX9U6vtlDVX1LvI45v1hhal/tF6rH3va539PD+HRJksXbu58jhsf65ptJ7Ze6VSBkPhnOy5Inrm8OusXvLw92lUj6xf2Pa4fcxVzz3ej9XrnIJz9f/hv+s5j2xfVk+957Pz9bgsDz/P+PN7yUNrrrU8JZmUelA25qIxoPv82sKf20se2byh9bd/s+cHOz6bA7SXRe9wSz10zXnoPK710N60n8Cvo3SNNMg+q3mpv+k73qVrN1ceUQ2m5DEW8sjmeF3/6s+vzT095WG/u2XgM5k6PqK5uvXvs6UeutY87PetraN+k4fPJMpDs/LjSfuYzVlrzqPUM3wWPo9zYx6HyvX9MaX117B9fNeydO3mzkN7y1/M5yXR83ntvcva8wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA4D/4Atd6RWw=
+  </data>
+ </layer>
+ <layer name="Craquement" width="100" height="100" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJzt2dEJwCAMRVHdf4Q2u5ZiC07QvMI54L9wQYIZAwAAAAAAAACAFMfsvgG7U48od4/3ACTxNuXRAwCAP/NHCADQp+aax8pM1q6eDnaEGfYe9NMCAAAAAAAAAAAAAAAAAAAAAAAAAAAAvnMB9FQNgw==
+  </data>
+ </layer>
+ <layer name="Murs" width="100" height="100" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJzt2U1u00AYBmAnsMgKToIqFgiW9CosUIG79AhIHIcFC+5TAbbKyNbIiTN/yah9HumTonY8jr83nnHaYQAAAAAAAAAAavuyG4bPjepdw7nf767duTbeNryuP+2mHj7JI5k80smjLz3k8eqQPrc80t2e2eec+0ge7Tz3PO738+vUPL7vH6um557HUkoeIYvcOkYes5L1atnnnBwCecxK94+c/sfkMfuW+KxZumat1Yuxtz/Huf+O9frE+/l4eBw31VPN48d4jfvdXFv9WI4N9XtYP/bY+DA25DHdH6kZTnnUfq7oQY3n3YfF6601a623JXnk7lm9qpHHr6FsvUrJI4jXq3hMD9ncZ5y7Vh5rzn3+OpZHPE/K/dFDHjla5hFs9evhyJhTx6fkkVLXVpJH2JtfLvbp1uvVMo8Wrp3fpf9+VTOPlp/nnDxy9ovYJfLYuqbbQ34eLT6rqfNOOdTIYpKSR87/KWK11vlrfP9Yex+1cghS8tjat2Nb+fWax6X2ijUt8zhnfGkeJX3LOW9rX8frevO/bhav1352t/L7U3UXHX9z4jxbFR/z4Yz9o3RNfOpq7R36W5cc+qXffZBDX2rkIJPLcS8AAAAAAAAAAAAAAAAAAAAAAAAAkOIfyruBuQ==
+  </data>
+ </layer>
+</map>
