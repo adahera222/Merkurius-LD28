@@ -6,7 +6,7 @@ import fr.kohen.alexandre.framework.network.Syncable;
 import fr.kohen.alexandre.framework.systems.DefaultSyncSystem.EntityUpdate;
 
 public class Health extends Component implements Syncable {
-	public int health = 100;
+	public int health = 0;
 	public int max = 100;
 
 	public Health() { }

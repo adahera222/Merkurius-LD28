@@ -10,7 +10,7 @@ public class CONST {
 	public static enum WEAPON { 
 		NAILGUN	(400, 	0, 		50, 	1000), 
 		BOLT	(25, 	700, 	15, 	400), 
-		SYRINGE	(650, 	1000, 	30, 	1000),
+		SYRINGE	(650, 	1000, 	100, 	1000),
 		// Not implemented
 		BAT		(100, 	100, 	100, 	0),  
 		MINE	(100, 	100, 	100, 	0), 

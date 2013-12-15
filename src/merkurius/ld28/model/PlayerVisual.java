@@ -17,7 +17,8 @@ public class PlayerVisual extends Visual {
 		
 		addAnimation("nailgun", 0.15f, Animation.NORMAL, 	tmp[playerId][0]);
 		addAnimation("bolt", 0.15f, Animation.NORMAL, 		tmp[playerId][1]);
-		addAnimation("bolt_shoot", 0.15f, Animation.NORMAL, tmp[playerId][2]);		
+		addAnimation("bolt_shoot", 0.15f, Animation.NORMAL, tmp[playerId][2]);
+		addAnimation("syringe", 0.15f, Animation.NORMAL, tmp[playerId][3]);		
 	}
 	
 }

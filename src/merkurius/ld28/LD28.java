@@ -6,7 +6,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 public class LD28 {
 	public static void main(String[] args) {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-		cfg.title = "Merkurius LD28 You Only Get One";
+		cfg.title = "One Ring To Rule All The Junkies";
 		cfg.useGL20 = true;
 		cfg.width = 800;
 		cfg.height = 600;

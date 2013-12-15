@@ -54,6 +54,12 @@ public class LD28SyncSystem extends DefaultSyncSystem {
 		if( !isServer && entityUpdate.getType().equalsIgnoreCase("syringe") ) {
 			EntityFactoryLD28.newClientSyringe(world, id).addToWorld();
 		}
+		if( !isServer && entityUpdate.getType().equalsIgnoreCase("bolt") ) {
+			EntityFactoryLD28.newClientBolt(world, id).addToWorld();
+		}
+		if( !isServer && entityUpdate.getType().equalsIgnoreCase("nail") ) {
+			EntityFactoryLD28.newNailClient(world, id).addToWorld();
+		}
 		
 		return null;
 	}

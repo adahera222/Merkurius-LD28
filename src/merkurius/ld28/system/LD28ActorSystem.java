@@ -61,6 +61,7 @@ public class LD28ActorSystem extends EntityProcessingSystem implements ActorSyst
         shootMapper		= ComponentMapper.getFor(Shooter.class, world);
     }
 
+    
     @Override
     protected void process(Entity e) { 
     	if( !playerFound && actorMapper.get(e).playerId == this.playerId ) {
@@ -78,10 +79,18 @@ public class LD28ActorSystem extends EntityProcessingSystem implements ActorSyst
     	}
     }
     
+    
     private void respawn(Entity e) {
     	healthMapper.get(e).setHealth(100);
     	transformMapper.get(e).setPosition( spawnPoints.get(rand.nextInt(spawnPoints.size())) );
-		shootMapper.get(e).setWeapon(WEAPON.valueOf("SYRINGE"));
+    	switch(rand.nextInt(2)) {
+    	case 0:
+    		shootMapper.get(e).setWeapon(WEAPON.SYRINGE);
+    		break;
+    	case 1:
+    		shootMapper.get(e).setWeapon(WEAPON.NAILGUN);
+    		break;
+    	}
 	}
 
 	public void setPlayerId(int playerId) {
@@ -93,6 +102,10 @@ public class LD28ActorSystem extends EntityProcessingSystem implements ActorSyst
 	public void dealDamage(Entity shooter, Entity hit, WEAPON weapon) {
 		if( healthMapper.has(hit) ) {
 			healthMapper.get(hit).damage(weapon.damage);
+			
+			if( healthMapper.get(hit).health == 0 && shootMapper.get(hit).weapon == WEAPON.BOLT ) {
+				shootMapper.get(shooter).weapon = WEAPON.BOLT;
+			}
 		}
 	}
 }

@@ -10,6 +10,7 @@ import merkurius.ld28.component.Health;
 import merkurius.ld28.component.Input;
 import merkurius.ld28.component.Shooter;
 import merkurius.ld28.system.LD28ActorSystem;
+import merkurius.ld28.system.LD28AnimationSystem;
 import merkurius.ld28.system.LD28InputSystem;
 import merkurius.ld28.system.LD28MapSystem;
 import merkurius.ld28.system.LD28PlayerSystem;
@@ -60,6 +61,7 @@ public class MainScreen extends GameScreen {
 		world.setSystem( new LD28MapSystem() );
 		world.setSystem( new LD28InputSystem() );
 		world.setSystem( new LD28PlayerSystem() );
+		world.setSystem( new LD28AnimationSystem() );
 		
 		
 		
@@ -90,7 +92,7 @@ public class MainScreen extends GameScreen {
 		
 
 		if ( isServer ) {
-			EntityFactoryLD28.newActor(world, 1, 0, 0, 0, 0, true).addToWorld();
+			EntityFactoryLD28.newRingbearer(world, 1, 0, 0, 0, 0, true).addToWorld();
 		} else {
 			try {  syncSystem.connect("127.0.0.1", 4445); }
 			catch (UnknownHostException e) { e.printStackTrace(); }

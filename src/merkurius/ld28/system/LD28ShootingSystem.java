@@ -69,9 +69,13 @@ public class LD28ShootingSystem extends EntityProcessingSystem implements RayCas
     		physicsSystem.raycast( 1, this, transformMapper.get(e).getPosition2().cpy().div(CONST.SCALE), endPoint.div(CONST.SCALE) );
     		lastHit.mul(CONST.SCALE);
     		if( lastEntity != null ) {
-    			Entity bullet = EntityFactoryLD28.newNailgunImpact( world, 1, lastHit.x, lastHit.y, 500, 0 );
-    	        bullet.addToWorld();
-    	        actorSystem.dealDamage(e, lastEntity, weapon);
+    			if( inputMapper.has(lastEntity) ) {
+    				actorSystem.dealDamage(e, lastEntity, weapon);
+    			} else {
+    				Entity bullet = EntityFactoryLD28.newNailgunImpact( world, 1, lastHit.x, lastHit.y, 2000, 0 );
+    				bullet.addToWorld();
+        	        transformMapper.get(bullet).rotation = inputMapper.get(e).rotation - 45;
+    			}    	        
     		}
 			break;
 			
@@ -83,7 +87,7 @@ public class LD28ShootingSystem extends EntityProcessingSystem implements RayCas
     		
             Entity syringe = EntityFactoryLD28.newServerSyringe( world, 1, syringePosition.x, syringePosition.y, weapon.range, e.getId(), weapon );
             syringe.addToWorld();
-            transformMapper.get(syringe).rotation = inputMapper.get(e).rotation;
+            transformMapper.get(syringe).rotation = inputMapper.get(e).rotation - 45;
             
             Vector2 syringeSpeed = new Vector2( 0, weapon.speed );
             syringeSpeed.setAngle( inputMapper.get(e).rotation );
@@ -99,7 +103,7 @@ public class LD28ShootingSystem extends EntityProcessingSystem implements RayCas
             Entity bullet = EntityFactoryLD28.newServerBolt( world, 1, bulletPosition.x, bulletPosition.y, weapon.range, e.getId(), weapon );
             bullet.addToWorld();
             
-            transformMapper.get(bullet).rotation = inputMapper.get(e).rotation - 45;
+            transformMapper.get(bullet).rotation = inputMapper.get(e).rotation;
             
             Vector2 bulletSpeed = new Vector2( 0, weapon.speed );
             bulletSpeed.setAngle( inputMapper.get(e).rotation );
