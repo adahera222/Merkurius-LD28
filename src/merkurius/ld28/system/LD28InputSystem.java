@@ -2,6 +2,7 @@ package merkurius.ld28.system;
 
 import merkurius.ld28.CONST;
 import merkurius.ld28.component.Input;
+import merkurius.ld28.component.Shooter;
 
 import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
@@ -10,6 +11,7 @@ import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.math.Vector2;
 
 import fr.kohen.alexandre.framework.components.PhysicsBodyComponent;
+import fr.kohen.alexandre.framework.components.Transform;
 import fr.kohen.alexandre.framework.components.Velocity;
 
 /**
@@ -21,6 +23,8 @@ public class LD28InputSystem extends EntityProcessingSystem {
 	protected ComponentMapper<Input>      			inputMapper;
 	protected ComponentMapper<PhysicsBodyComponent>	bodyMapper;
 	protected ComponentMapper<Velocity>				velocityMapper;
+	protected ComponentMapper<Transform>			transformMapper;
+	protected ComponentMapper<Shooter>				shootMapper;
 	
 	@SuppressWarnings("unchecked")
 	public LD28InputSystem() {
@@ -29,15 +33,25 @@ public class LD28InputSystem extends EntityProcessingSystem {
 	
 	@Override
 	public void initialize() {
-		inputMapper = ComponentMapper.getFor(Input.class, world);
-		bodyMapper 	= ComponentMapper.getFor(PhysicsBodyComponent.class, world);
+		inputMapper 	= ComponentMapper.getFor(Input.class, world);
+		bodyMapper 		= ComponentMapper.getFor(PhysicsBodyComponent.class, world);
 		velocityMapper 	= ComponentMapper.getFor(Velocity.class, world);
+		transformMapper = ComponentMapper.getFor(Transform.class, world);
+		shootMapper 	= ComponentMapper.getFor(Shooter.class, world);
 	}
 
 	@Override
 	protected void process(Entity e) {
 		int input = inputMapper.get(e).input;
+		
+		transformMapper.get(e).setRotation(inputMapper.get(e).rotation - 90);
+		
 		Vector2 force = new Vector2();
+		if( input >= 16 ) {
+			input -= 16;
+			shootMapper.get(e).setShooting(true);
+		}
+		
 		if( input >= 8 ) {
 			input -= 8;
 			force.add(0, -CONST.MOVEMENT);

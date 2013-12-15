@@ -12,11 +12,13 @@ import merkurius.ld28.component.Server;
 import merkurius.ld28.component.Shooter;
 import merkurius.ld28.model.BulletAction;
 import merkurius.ld28.model.BulletBody;
+import merkurius.ld28.model.BulletClientAction;
 import merkurius.ld28.model.ClientScreenAction;
 import merkurius.ld28.model.PlayerBody;
 import merkurius.ld28.model.PlayerVisual;
 import merkurius.ld28.model.ServerScreenAction;
 import merkurius.ld28.model.ServerlistScreenAction;
+import merkurius.ld28.model.SyringeVisual;
 import merkurius.ld28.model.WallBody;
 
 import com.artemis.Entity;
@@ -50,8 +52,10 @@ public static Map<String, Action> actions = new HashMap<String, Action>();
         visuals.put( "wall", new BoxVisual(20,20, Color.BLUE));
         visuals.put( "player0", new PlayerVisual(0));
         visuals.put( "player1", new PlayerVisual(1));
-        
+        visuals.put( "syringe", new SyringeVisual());
+
         actions.put( "bullet_action", new BulletAction() );
+        actions.put( "bullet_client_action", new BulletClientAction() );
         actions.put( "server_button", new ServerScreenAction() );
         actions.put( "serverlist_button", new ServerlistScreenAction() );
         actions.put( "client_button", new ClientScreenAction() );
@@ -96,7 +100,8 @@ public static Map<String, Action> actions = new HashMap<String, Action>();
 		return e;
 	}
 
-	public static Entity newBullet(World world, int mapId, float x, float y, int ttl, int parentid, WEAPON weapon) {
+	
+	public static Entity newServerSyringe(World world, int mapId, float x, float y, int ttl, int parentid, WEAPON weapon) {
 		Entity e = world.createEntity();
 	    e.addComponent( new Transform(mapId, x, y, 0) );
 		e.addComponent( new Velocity() );
@@ -105,11 +110,65 @@ public static Map<String, Action> actions = new HashMap<String, Action>();
 		e.addComponent( new Parent(parentid) );
 		e.addComponent( new Bullet(weapon) );
 	    e.addComponent( new PhysicsBodyComponent(new BulletBody(2/CONST.SCALE)) );
-	    e.addComponent( new VisualComponent("wall") );
+	    e.addComponent( new VisualComponent("syringe") );
 	    e.addComponent( new ActionsComponent("bullet_action") );
 	    world.getManager(GroupManager.class).add(e,"bullet");
-	    return e;
+		e.addComponent( new Synchronize("syringe", true) );
+		return e;
 	}
+
+	public static Entity newClientSyringe(World world, int id) {
+		Entity e = world.createEntity();
+	    e.addComponent( new Transform(1, -1000, 0, 1) );
+		e.addComponent( new Velocity() );
+		e.addComponent( new EntityState() );
+		e.addComponent( new Expires(500) );
+		e.addComponent( new Parent(-1) );
+		e.addComponent( new Bullet(null) );
+	    e.addComponent( new PhysicsBodyComponent(new BulletBody(2/CONST.SCALE)) );
+	    e.addComponent( new VisualComponent("syringe") );
+	    e.addComponent( new ActionsComponent("bullet_client_action") );
+	    world.getManager(GroupManager.class).add(e,"bullet");
+		e.addComponent( new Synchronize("syringe", false, id) );
+		return e;
+	}
+	
+	
+	
+	
+	public static Entity newServerBolt(World world, int mapId, float x, float y, int ttl, int parentid, WEAPON weapon) {
+		Entity e = world.createEntity();
+	    e.addComponent( new Transform(mapId, x, y, 0) );
+		e.addComponent( new Velocity() );
+		e.addComponent( new EntityState() );
+		e.addComponent( new Expires(ttl) );
+		e.addComponent( new Parent(parentid) );
+		e.addComponent( new Bullet(weapon) );
+	    e.addComponent( new PhysicsBodyComponent(new BulletBody(2/CONST.SCALE)) );
+	    e.addComponent( new VisualComponent("syringe") );
+	    e.addComponent( new ActionsComponent("bullet_action") );
+	    world.getManager(GroupManager.class).add(e,"bullet");
+		e.addComponent( new Synchronize("syringe", true) );
+		return e;
+	}
+
+	public static Entity newClientBolt(World world, int id) {
+		Entity e = world.createEntity();
+	    e.addComponent( new Transform(1, -1000, 0, 1) );
+		e.addComponent( new Velocity() );
+		e.addComponent( new EntityState() );
+		e.addComponent( new Expires(500) );
+		e.addComponent( new Parent(-1) );
+		e.addComponent( new Bullet(null) );
+	    e.addComponent( new PhysicsBodyComponent(new BulletBody(2/CONST.SCALE)) );
+	    e.addComponent( new VisualComponent("syringe") );
+	    e.addComponent( new ActionsComponent("bullet_client_action") );
+	    world.getManager(GroupManager.class).add(e,"bullet");
+		e.addComponent( new Synchronize("syringe", false, id) );
+		return e;
+	}
+	
+	
 	
 	public static Entity newNailgunImpact(World world, int mapId, float x, float y, int ttl, int parentid) {
 		Entity e = world.createEntity();
@@ -152,6 +211,8 @@ public static Map<String, Action> actions = new HashMap<String, Action>();
 				.addComponent( new ActionsComponent("client_button") )
 				.addComponent( new Server(address) );
 	}
+
+	
 	
 	
 	

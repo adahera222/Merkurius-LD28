@@ -67,17 +67,12 @@ public class LD28PlayerSystem extends EntityProcessingSystem {
 
     @Override
     protected void process(Entity e) {
-		if (mouseComponent.clicked){
-			shooterMapper.get(e).setShooting(true);
-		} else {
-			shooterMapper.get(e).setShooting(false);
-		}
-		Vector2 direction = mouseTransform.getPosition2().cpy().sub(transformMapper.get(e).getPosition2());
-		shooterMapper.get(e).setAim(direction.angle());
-        
-		transformMapper.get(e).setRotation(direction.angle() - 90);
+		
+		Vector2 direction = mouseTransform.getPosition2().cpy().sub(transformMapper.get(e).getPosition2());        
+		inputMapper.get(e).rotation = direction.angle();
 		
         inputMapper.get(e).input = 0;
+        
         if ( KeyBindings.isKeyPressed("move_left") ) {
         	inputMapper.get(e).input += 1;
 		}
@@ -93,5 +88,8 @@ public class LD28PlayerSystem extends EntityProcessingSystem {
 		if ( KeyBindings.isKeyPressed("move_down") ) {
 			inputMapper.get(e).input += 8;
 		}
+		if (mouseComponent.clicked){
+			inputMapper.get(e).input += 16;
+		} 
     }
 }

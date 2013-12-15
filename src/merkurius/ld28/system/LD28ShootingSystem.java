@@ -3,6 +3,7 @@ package merkurius.ld28.system;
 import merkurius.ld28.CONST;
 import merkurius.ld28.CONST.WEAPON;
 import merkurius.ld28.EntityFactoryLD28;
+import merkurius.ld28.component.Input;
 import merkurius.ld28.component.Shooter;
 
 import com.artemis.Aspect;
@@ -20,9 +21,10 @@ import fr.kohen.alexandre.framework.systems.interfaces.PhysicsSystem;
 
 public class LD28ShootingSystem extends EntityProcessingSystem implements RayCastCallback, ShootingSystem {
 
-    protected ComponentMapper<Shooter>      shooterMapper;
-    protected ComponentMapper<Transform> 	transformMapper;
-    protected ComponentMapper<Velocity>     velocityMapper;
+    protected ComponentMapper<Shooter>   shooterMapper;
+    protected ComponentMapper<Transform> transformMapper;
+    protected ComponentMapper<Velocity>  velocityMapper;
+    protected ComponentMapper<Input>     inputMapper;
 	protected PhysicsSystem physicsSystem;
 	private Entity lastEntity = null;
 	private Vector2 lastHit = null;
@@ -38,6 +40,7 @@ public class LD28ShootingSystem extends EntityProcessingSystem implements RayCas
         transformMapper = ComponentMapper.getFor(Transform.class, world);
         shooterMapper   = ComponentMapper.getFor(Shooter.class, world);
         velocityMapper  = ComponentMapper.getFor(Velocity.class, world);
+        inputMapper  	= ComponentMapper.getFor(Input.class, world);
         physicsSystem	= Systems.get(PhysicsSystem.class, world);
         actorSystem	= Systems.get(ActorSystem.class, world);
     }
@@ -46,7 +49,7 @@ public class LD28ShootingSystem extends EntityProcessingSystem implements RayCas
     protected void process(Entity e) {
         shooterMapper.get(e).decrementTimer((int) (world.getDelta()*1000));
         
-        if (shooterMapper.get(e).isShooting() && shooterMapper.get(e).canShoot()) {
+        if (inputMapper.get(e).input > 15 && shooterMapper.get(e).canShoot()) {
         	shoot(e, shooterMapper.get(e).weapon);
         	cooldown(e, shooterMapper.get(e).weapon);
         }
@@ -59,7 +62,7 @@ public class LD28ShootingSystem extends EntityProcessingSystem implements RayCas
 		
 		case NAILGUN:
 			Vector2 endPoint = new Vector2(0, WEAPON.NAILGUN.range);
-			endPoint.setAngle( shooterMapper.get(e).getAim() );
+			endPoint.setAngle( inputMapper.get(e).rotation );
 			endPoint.add( transformMapper.get(e).getPosition2() );
 			lastEntity = null;
 			lastHit = null;
@@ -72,17 +75,34 @@ public class LD28ShootingSystem extends EntityProcessingSystem implements RayCas
     		}
 			break;
 			
+			
 		case SYRINGE:
+			Vector2 syringePosition = new Vector2(0,20);
+			syringePosition.setAngle( inputMapper.get(e).rotation  );
+			syringePosition.add( transformMapper.get(e).getPosition2() );
+    		
+            Entity syringe = EntityFactoryLD28.newServerSyringe( world, 1, syringePosition.x, syringePosition.y, weapon.range, e.getId(), weapon );
+            syringe.addToWorld();
+            transformMapper.get(syringe).rotation = inputMapper.get(e).rotation;
+            
+            Vector2 syringeSpeed = new Vector2( 0, weapon.speed );
+            syringeSpeed.setAngle( inputMapper.get(e).rotation );
+            velocityMapper.get(syringe).setSpeed(syringeSpeed);
+            break;
+            
+            
 		case BOLT:
 			Vector2 bulletPosition = new Vector2(0,20);
-			bulletPosition.setAngle( shooterMapper.get(e).getAim() );
+			bulletPosition.setAngle( inputMapper.get(e).rotation  );
     		bulletPosition.add( transformMapper.get(e).getPosition2() );
     		
-            Entity bullet = EntityFactoryLD28.newBullet( world, 1, bulletPosition.x, bulletPosition.y, weapon.range, e.getId(), weapon );
+            Entity bullet = EntityFactoryLD28.newServerBolt( world, 1, bulletPosition.x, bulletPosition.y, weapon.range, e.getId(), weapon );
             bullet.addToWorld();
             
+            transformMapper.get(bullet).rotation = inputMapper.get(e).rotation - 45;
+            
             Vector2 bulletSpeed = new Vector2( 0, weapon.speed );
-            bulletSpeed.setAngle( shooterMapper.get(e).getAim() );
+            bulletSpeed.setAngle( inputMapper.get(e).rotation );
             velocityMapper.get(bullet).setSpeed(bulletSpeed);
 			break;
 		case BAT:
@@ -96,7 +116,7 @@ public class LD28ShootingSystem extends EntityProcessingSystem implements RayCas
 	
 	private void cooldown(Entity e, WEAPON weapon) {
 		shooterMapper.get(e).setTimer(weapon.reload);
-        shooterMapper.get(e).setShooting(false);
+		shooterMapper.get(e).setShooting(false);
 	}
 
 	@Override

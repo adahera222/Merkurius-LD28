@@ -10,16 +10,15 @@ import fr.kohen.alexandre.framework.systems.DefaultSyncSystem.EntityUpdate;
 public class Shooter extends Component implements Syncable {
 
     public int timer 		= 0;
-    public boolean firing 	= false;
-    public float aim 		= 0;
     public WEAPON weapon 	= WEAPON.NAILGUN;
+	private boolean firing;
     
   
 
     public Shooter(WEAPON weapon) {
     	this.weapon = weapon;
     }
-    public void setAim(float direction) { aim = direction; }
+    //public void setAim(float direction) { aim = direction; }
     public boolean canShoot() {
         return timer <= 0;
     }
@@ -39,23 +38,18 @@ public class Shooter extends Component implements Syncable {
     public void setShooting(boolean wantToShoot) {
         this.firing = wantToShoot;
     }
-
-    public float getAim() {
-        return aim;
-    }
     
     public void setWeapon(WEAPON weapon) { this.weapon = weapon; }
     public WEAPON getWeapon() { return this.weapon; }
 
 	@Override
 	public void sync(EntityUpdate update) {
-		this.aim		= update.getNextFloat();
-		this.firing		= update.getNextBoolean();
+		this.timer		= update.getNextInteger();
 		this.weapon		= WEAPON.valueOf(update.getNext());
 	}
 
 	@Override
 	public StringBuilder getMessage() {
-		return new StringBuilder().append(aim).append(" ").append(firing).append(" ").append(weapon);
+		return new StringBuilder().append(timer).append(" ").append(weapon);
 	}
 }

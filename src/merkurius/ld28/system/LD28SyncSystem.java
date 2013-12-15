@@ -51,6 +51,10 @@ public class LD28SyncSystem extends DefaultSyncSystem {
 		if( !isServer && entityUpdate.getType().equalsIgnoreCase("player") ) {
 			EntityFactoryLD28.newActor(world, 1, 0, 0, Integer.valueOf(entityUpdate.getData()[9]), id, false).addToWorld();
 		}
+		if( !isServer && entityUpdate.getType().equalsIgnoreCase("syringe") ) {
+			EntityFactoryLD28.newClientSyringe(world, id).addToWorld();
+		}
+		
 		return null;
 	}
 	
