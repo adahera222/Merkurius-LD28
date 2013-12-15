@@ -90,6 +90,8 @@ public class LD28PlayerSystem extends EntityProcessingSystem implements PlayerSy
 			Vector2 direction = mouseTransform.getPosition2().cpy().sub(transformMapper.get(e).getPosition2());
 			shooterMapper.get(e).setAim(direction.angle());
 	        
+			transformMapper.get(e).setRotation(direction.angle() - 90);
+			
 	        inputMapper.get(e).input = 0;
 	        if ( KeyBindings.isKeyPressed("move_left") ) {
 	        	inputMapper.get(e).input += 1;

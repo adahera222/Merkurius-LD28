@@ -1,24 +1,27 @@
 package merkurius.ld28.component;
 
+import merkurius.ld28.CONST.WEAPON;
+
 import com.artemis.Component;
 
 import fr.kohen.alexandre.framework.network.Syncable;
 import fr.kohen.alexandre.framework.systems.DefaultSyncSystem.EntityUpdate;
 
-public class Actor extends Component implements Syncable {
-	public int playerId = 0;
+public class Bullet extends Component implements Syncable {
 
-	public Actor(int playerId) {
-		this.playerId = playerId;
+	public WEAPON weapon;
+	
+	public Bullet(WEAPON weapon) {
+		this.weapon = weapon;
 	}
 	
 	@Override
 	public void sync(EntityUpdate update) {
-		this.playerId 		= update.getNextInteger();
+		this.weapon		= WEAPON.valueOf(update.getNext());
 	}
 
 	@Override
 	public StringBuilder getMessage() {
-		return new StringBuilder().append(playerId);
+		return new StringBuilder().append(weapon);
 	}
 }

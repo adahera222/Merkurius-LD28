@@ -18,7 +18,7 @@ import fr.kohen.alexandre.framework.components.Transform;
 import fr.kohen.alexandre.framework.components.Velocity;
 import fr.kohen.alexandre.framework.systems.interfaces.PhysicsSystem;
 
-public class LD28ShootingSystem extends EntityProcessingSystem implements RayCastCallback {
+public class LD28ShootingSystem extends EntityProcessingSystem implements RayCastCallback, ShootingSystem {
 
     protected ComponentMapper<Shooter>      shooterMapper;
     protected ComponentMapper<Transform> 	transformMapper;
@@ -54,7 +54,7 @@ public class LD28ShootingSystem extends EntityProcessingSystem implements RayCas
 
 	
 
-	private void shoot(Entity e, WEAPON weapon) {
+	public void shoot(Entity e, WEAPON weapon) {
 		switch(weapon) {
 		
 		case NAILGUN:
@@ -66,24 +66,25 @@ public class LD28ShootingSystem extends EntityProcessingSystem implements RayCas
     		physicsSystem.raycast( 1, this, transformMapper.get(e).getPosition2().cpy().div(CONST.SCALE), endPoint.div(CONST.SCALE) );
     		lastHit.mul(CONST.SCALE);
     		if( lastEntity != null ) {
-    			Entity bullet = EntityFactoryLD28.newBullet( world, 1, lastHit.x, lastHit.y, 1000, 0 );
+    			Entity bullet = EntityFactoryLD28.newNailgunImpact( world, 1, lastHit.x, lastHit.y, 500, 0 );
     	        bullet.addToWorld();
     	        damageSystem.dealDamage(e, lastEntity, weapon);
     		}
 			break;
 			
 		case SYRINGE:
+		case BOLT:
 			Vector2 bulletPosition = new Vector2(0,20);
 			bulletPosition.setAngle( shooterMapper.get(e).getAim() );
     		bulletPosition.add( transformMapper.get(e).getPosition2() );
-            Entity bullet = EntityFactoryLD28.newBullet( world, 1, bulletPosition.x, bulletPosition.y, WEAPON.SYRINGE.range, e.getId() );
+    		
+            Entity bullet = EntityFactoryLD28.newBullet( world, 1, bulletPosition.x, bulletPosition.y, weapon.range, e.getId(), weapon );
             bullet.addToWorld();
-            Vector2 bulletSpeed = new Vector2( 0, WEAPON.SYRINGE.speed );
+            
+            Vector2 bulletSpeed = new Vector2( 0, weapon.speed );
             bulletSpeed.setAngle( shooterMapper.get(e).getAim() );
             velocityMapper.get(bullet).setSpeed(bulletSpeed);
 			break;
-			
-		case RING:
 		case BAT:
 		case MINE:
 		case ACID:

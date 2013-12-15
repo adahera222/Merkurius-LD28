@@ -4,12 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import merkurius.ld28.CONST.WEAPON;
+import merkurius.ld28.component.Bullet;
 import merkurius.ld28.component.Health;
 import merkurius.ld28.component.Input;
 import merkurius.ld28.component.Shooter;
 import merkurius.ld28.model.BulletAction;
 import merkurius.ld28.model.BulletBody;
 import merkurius.ld28.model.PlayerBody;
+import merkurius.ld28.model.PlayerVisual;
 import merkurius.ld28.model.WallBody;
 
 import com.artemis.Entity;
@@ -40,6 +42,8 @@ public static Map<String, Action> actions = new HashMap<String, Action>();
 	
 	static {
         visuals.put( "wall", new BoxVisual(20,20, Color.BLUE));
+        visuals.put( "player0", new PlayerVisual(0));
+        visuals.put( "player1", new PlayerVisual(1));
         actions.put( "bullet_action", new BulletAction() );
 	}
 
@@ -50,10 +54,10 @@ public static Map<String, Action> actions = new HashMap<String, Action>();
 		e.addComponent( new Velocity() );
 		e.addComponent( new EntityState() );
 		e.addComponent( new Input() );
-		e.addComponent( new Shooter(WEAPON.SYRINGE) );
+		e.addComponent( new Shooter(WEAPON.BOLT) );
 		e.addComponent( new Health() );
 	    e.addComponent( new PhysicsBodyComponent(new PlayerBody()) );
-	    e.addComponent( new VisualComponent("wall") );
+	    e.addComponent( new VisualComponent("player0") );
 	    world.getManager(GroupManager.class).add(e,"actor");
 	    return e;
 	}
@@ -81,7 +85,22 @@ public static Map<String, Action> actions = new HashMap<String, Action>();
 		return e;
 	}
 
-	public static Entity newBullet(World world, int mapId, float x, float y, int ttl, int parentid) {
+	public static Entity newBullet(World world, int mapId, float x, float y, int ttl, int parentid, WEAPON weapon) {
+		Entity e = world.createEntity();
+	    e.addComponent( new Transform(mapId, x, y, 0) );
+		e.addComponent( new Velocity() );
+		e.addComponent( new EntityState() );
+		e.addComponent( new Expires(ttl) );
+		e.addComponent( new Parent(parentid) );
+		e.addComponent( new Bullet(weapon) );
+	    e.addComponent( new PhysicsBodyComponent(new BulletBody(2/CONST.SCALE)) );
+	    e.addComponent( new VisualComponent("wall") );
+	    e.addComponent( new ActionsComponent("bullet_action") );
+	    world.getManager(GroupManager.class).add(e,"bullet");
+	    return e;
+	}
+	
+	public static Entity newNailgunImpact(World world, int mapId, float x, float y, int ttl, int parentid) {
 		Entity e = world.createEntity();
 	    e.addComponent( new Transform(mapId, x, y, 0) );
 		e.addComponent( new Velocity() );
@@ -90,7 +109,6 @@ public static Map<String, Action> actions = new HashMap<String, Action>();
 		e.addComponent( new Parent(parentid) );
 	    e.addComponent( new PhysicsBodyComponent(new BulletBody(2/CONST.SCALE)) );
 	    e.addComponent( new VisualComponent("wall") );
-	    e.addComponent( new ActionsComponent("bullet_action") );
 	    world.getManager(GroupManager.class).add(e,"bullet");
 	    return e;
 	}
