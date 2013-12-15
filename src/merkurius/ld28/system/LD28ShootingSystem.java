@@ -1,5 +1,6 @@
 package merkurius.ld28.system;
 
+import merkurius.ld28.CONST;
 import merkurius.ld28.CONST.WEAPON;
 import merkurius.ld28.EntityFactoryLD28;
 import merkurius.ld28.component.Shooter;
@@ -25,6 +26,7 @@ public class LD28ShootingSystem extends EntityProcessingSystem implements RayCas
 	protected PhysicsSystem physicsSystem;
 	private Entity lastEntity = null;
 	private Vector2 lastHit = null;
+	private DamageSystem damageSystem;
 
     @SuppressWarnings("unchecked")
 	public LD28ShootingSystem() {
@@ -37,6 +39,7 @@ public class LD28ShootingSystem extends EntityProcessingSystem implements RayCas
         shooterMapper   = ComponentMapper.getFor(Shooter.class, world);
         velocityMapper  = ComponentMapper.getFor(Velocity.class, world);
         physicsSystem	= Systems.get(PhysicsSystem.class, world);
+        damageSystem	= Systems.get(DamageSystem.class, world);
     }
 
     @Override
@@ -60,10 +63,12 @@ public class LD28ShootingSystem extends EntityProcessingSystem implements RayCas
 			endPoint.add( transformMapper.get(e).getPosition2() );
 			lastEntity = null;
 			lastHit = null;
-    		physicsSystem.raycast( 1, this, transformMapper.get(e).getPosition2(), endPoint );
+    		physicsSystem.raycast( 1, this, transformMapper.get(e).getPosition2().cpy().div(CONST.SCALE), endPoint.div(CONST.SCALE) );
+    		lastHit.mul(CONST.SCALE);
     		if( lastEntity != null ) {
     			Entity bullet = EntityFactoryLD28.newBullet( world, 1, lastHit.x, lastHit.y, 1000, 0 );
     	        bullet.addToWorld();
+    	        damageSystem.dealDamage(e, lastEntity, weapon);
     		}
 			break;
 			

@@ -3,43 +3,45 @@ package merkurius.ld28.system;
 import merkurius.ld28.CONST.WEAPON;
 import merkurius.ld28.component.Health;
 
+import com.artemis.Aspect;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
-import com.artemis.systems.VoidEntitySystem;
+import com.artemis.systems.EntityProcessingSystem;
+import com.badlogic.gdx.Gdx;
 
 import fr.kohen.alexandre.framework.base.Systems;
-import fr.kohen.alexandre.framework.components.Transform;
-import fr.kohen.alexandre.framework.components.Velocity;
 import fr.kohen.alexandre.framework.systems.interfaces.PhysicsSystem;
 
-public class LD28DamageSystem extends VoidEntitySystem implements DamageSystem {
+public class LD28DamageSystem extends EntityProcessingSystem implements DamageSystem {
 
     protected ComponentMapper<Health>		healthMapper;
-    protected ComponentMapper<Transform> 	transformMapper;
-    protected ComponentMapper<Velocity>     velocityMapper;
 	protected PhysicsSystem physicsSystem;
 
+	@SuppressWarnings("unchecked")
 	public LD28DamageSystem() {
-        super();
+        super( Aspect.getAspectForAll(Health.class) );
     }
 
     @Override
     public void initialize(){
         healthMapper   = ComponentMapper.getFor(Health.class, world);
-        
-        
-        transformMapper = ComponentMapper.getFor(Transform.class, world);
-        velocityMapper  = ComponentMapper.getFor(Velocity.class, world);
         physicsSystem	= Systems.get(PhysicsSystem.class, world);
     }
 
 
 	@Override
 	public void dealDamage(Entity shooter, Entity hit, WEAPON weapon) {
-		healthMapper.get(hit).damage(weapon.damage);	
+		if( healthMapper.has(hit) ) {
+			Gdx.app.log("Damage dealt", "" +weapon.damage);
+			healthMapper.get(hit).damage(weapon.damage);
+		}
 	}
 
 	@Override
-	protected void processSystem() {
+	protected void process(Entity e) {
+		if( healthMapper.get(e).health == 0 ) {
+			e.deleteFromWorld();
+		}
+		
 	}
 }

@@ -18,8 +18,8 @@ public class Health extends Component implements Syncable {
 
 	public int getHealth() { return this.health; }
 	public void setHealth(int health) { this.health = health; }
-	public void damage(int damage) { this.health = Math.min(0, health-damage); }
-	public void heal(int heal) { this.health = Math.max(max, health+heal); }
+	public void damage(int damage) { this.health = Math.max(0, health-damage); }
+	public void heal(int heal) { this.health = Math.min(max, health+heal); }
 	
 	@Override
 	public void sync(EntityUpdate update) {

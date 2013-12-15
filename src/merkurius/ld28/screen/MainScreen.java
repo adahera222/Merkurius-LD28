@@ -4,6 +4,7 @@ import java.net.UnknownHostException;
 
 import merkurius.ld28.CONST;
 import merkurius.ld28.EntityFactoryLD28;
+import merkurius.ld28.system.LD28DamageSystem;
 import merkurius.ld28.system.LD28InputSystem;
 import merkurius.ld28.system.LD28MapSystem;
 import merkurius.ld28.system.LD28PlayerSystem;
@@ -12,6 +13,7 @@ import merkurius.ld28.system.ScaledBox2DSystem;
 import fr.kohen.alexandre.examples.network.NetworkExampleSyncSystem;
 import fr.kohen.alexandre.framework.base.GameScreen;
 import fr.kohen.alexandre.framework.components.Synchronize;
+import fr.kohen.alexandre.framework.systems.DefaultActionSystem;
 import fr.kohen.alexandre.framework.systems.DefaultCameraSystem;
 import fr.kohen.alexandre.framework.systems.DefaultDebugSystem;
 import fr.kohen.alexandre.framework.systems.DefaultExpirationSystem;
@@ -32,18 +34,19 @@ public class MainScreen extends GameScreen {
 	
 	@Override
 	protected void setSystems() {
+		world.setSystem( new DefaultCameraSystem() );
 		world.setSystem( new DefaultRenderSystem() );
+		world.setSystem( new DefaultDebugSystem() );
 		world.setSystem( new DefaultVisualSystem(EntityFactoryLD28.visuals) );
 		world.setSystem( new ScaledBox2DSystem(CONST.SCALE) );	
 		world.setSystem( new DefaultExpirationSystem() );
 		world.setSystem( new DefaultMouseSystem() );
+		world.setSystem( new DefaultActionSystem(EntityFactoryLD28.actions) );
 		world.setSystem( new LD28MapSystem() );
 		world.setSystem( new LD28InputSystem() );
 		world.setSystem( new LD28PlayerSystem() );
 		world.setSystem( new LD28ShootingSystem() );
-		world.setSystem( new DefaultCameraSystem() );
-		world.setSystem( new DefaultDebugSystem() );
-		//world.setSystem( new DefaultControlSystem(50) );
+		world.setSystem( new LD28DamageSystem() );
 		
 		/*if( isServer ) {
 			syncSystem = world.setSystem( new NetworkExampleSyncSystem(0.1f, 4445, true) );

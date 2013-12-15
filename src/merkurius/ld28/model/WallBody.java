@@ -39,8 +39,8 @@ public class WallBody extends PhysicsBody {
         groundBox.setAsBox(width/2, length/2);
         // Create a fixture from our polygon shape and add it to our ground body
         Fixture fixture = body.createFixture(groundBox, 0.0f);
-        fixture.setRestitution(1);
-        fixture.setFriction(0.5f);
+        fixture.setRestitution(0f);
+        fixture.setFriction(1f);
 
         Filter filter = new Filter();
         filter.categoryBits = C.CATEGORY_SCENERY;

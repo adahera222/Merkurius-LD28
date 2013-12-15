@@ -13,10 +13,14 @@ public class Shooter extends Component implements Syncable {
     public boolean firing 	= false;
     public float aim 		= 0;
     public WEAPON weapon 	= WEAPON.NAILGUN;
-
-    public void setAim(float direction) { aim = direction; }
     
-   public boolean canShoot() {
+  
+
+    public Shooter(WEAPON weapon) {
+    	this.weapon = weapon;
+    }
+    public void setAim(float direction) { aim = direction; }
+    public boolean canShoot() {
         return timer <= 0;
     }
 

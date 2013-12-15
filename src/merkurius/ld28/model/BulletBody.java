@@ -30,13 +30,14 @@ public class BulletBody extends PhysicsBody {
 
         // Create a body from the defintion and add it to the world
         body = box2dworld.createBody(bodyDef);
+        body.setFixedRotation(true);
         
         CircleShape circle = new CircleShape();
         circle.setRadius(size);
         
-        Fixture fixture = body.createFixture(circle, 0.1f);
-        fixture.setRestitution(1);
-        fixture.setFriction(0.1f);
+        Fixture fixture = body.createFixture(circle, 1f);
+        fixture.setRestitution(0f);
+        fixture.setFriction(1f);
         
         Filter filter = new Filter();
         filter.categoryBits = C.CATEGORY_ITEM;

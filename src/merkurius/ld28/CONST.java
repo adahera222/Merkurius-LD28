@@ -7,10 +7,10 @@ public class CONST {
 	
 	
 	public static enum WEAPON { 
-		NAILGUN	(400, 	0, 		100, 	1000), 
+		NAILGUN	(400, 	0, 		50, 	1000), 
 		RING	(100, 	100, 	100, 	0), 
 		BAT		(100, 	100, 	100, 	0), 
-		SYRINGE	(650, 	900, 	100, 	1000), 
+		SYRINGE	(650, 	900, 	30, 	1000), 
 		MINE	(100, 	100, 	100, 	0), 
 		ACID	(100, 	100, 	100, 	0);
 		//		reload	speed	damage	range/ttl
