@@ -94,7 +94,7 @@ public class MainScreen extends GameScreen {
 		if ( isServer ) {
 			EntityFactoryLD28.newRingbearer(world, 1, 0, 0, 0, 0, true).addToWorld();
 		} else {
-			try {  syncSystem.connect("127.0.0.1", 4445); }
+			try {  syncSystem.connect(address, 4445); }
 			catch (UnknownHostException e) { e.printStackTrace(); }
 		}
 	}

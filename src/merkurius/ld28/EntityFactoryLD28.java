@@ -15,6 +15,7 @@ import merkurius.ld28.model.BulletAction;
 import merkurius.ld28.model.BulletBody;
 import merkurius.ld28.model.BulletClientAction;
 import merkurius.ld28.model.ClientScreenAction;
+import merkurius.ld28.model.MenuVisual;
 import merkurius.ld28.model.NailVisual;
 import merkurius.ld28.model.PlayerBody;
 import merkurius.ld28.model.PlayerVisual;
@@ -63,6 +64,7 @@ public static Map<String, Action> actions = new HashMap<String, Action>();
         visuals.put( "syringe", new SyringeVisual());
         visuals.put( "bolt", new BoltVisual());
         visuals.put( "nail", new NailVisual());
+        visuals.put( "menu", new MenuVisual());
 
         actions.put( "bullet_action", new BulletAction() );
         actions.put( "bullet_client_action", new BulletClientAction() );
@@ -234,16 +236,23 @@ public static Map<String, Action> actions = new HashMap<String, Action>();
 		e.addComponent( new EntityState() );
 		return e;
 	}
+	
+	public static Entity newButton(World world, int mapId, float x, float y) {
+		Entity e = world.createEntity();
+		e.addComponent( new Transform(mapId, x, y, -1) );
+		e.addComponent( new EntityState() );
+		return e;
+	}
 
 	public static Entity newServerButton(World world, int mapId, int x, int y) {
-		return newText(world, mapId, x, y, "Start Server")
-				.addComponent( new PhysicsBodyComponent(new BoxBody(100,50)) )
+		return newButton(world, mapId, x, y)
+				.addComponent( new PhysicsBodyComponent(new BoxBody(300,50)) )
 				.addComponent( new ActionsComponent("server_button") );
 	}
 
 	public static Entity newServerlistButton(World world, int mapId, int x, int y) {
-		return newText(world, mapId, x, y, "Play online")
-				.addComponent( new PhysicsBodyComponent(new BoxBody(100,50)) )
+		return newButton(world, mapId, x, y)
+				.addComponent( new PhysicsBodyComponent(new BoxBody(300,50)) )
 				.addComponent( new ActionsComponent("serverlist_button") );
 	}
 	
@@ -255,7 +264,14 @@ public static Map<String, Action> actions = new HashMap<String, Action>();
 	}
 
 	
-	
+	public static Entity newBackground(World world, int mapId, float x, float y) {
+		Entity e = world.createEntity();
+		e.addComponent( new Transform(mapId, x, y, -1) )
+			.addComponent( new EntityState() )
+			.addComponent( new PhysicsBodyComponent(new BoxBody(1,1)) )
+			.addComponent( new VisualComponent("menu") );
+		return e;
+	}
 	
 	
 	

@@ -29,8 +29,9 @@ public class MenuScreen extends GameScreen {
 	
 	@Override
 	protected void initialize() {
-		EntityFactoryLD28.newServerButton(world, 1, 0, 100).addToWorld();
-		EntityFactoryLD28.newServerlistButton(world, 1, 0, -100).addToWorld();
+		EntityFactoryLD28.newServerButton(world, 1, 0, 250).addToWorld();
+		EntityFactoryLD28.newServerlistButton(world, 1, 0, -220).addToWorld();
+		EntityFactoryLD28.newBackground(world, 1, 0, 0).addToWorld();
 		EntityFactoryLD28.newCamera(world, 1, 0, 0, 0, 0, 0, 800, 600, 0, "testCamera").addToWorld();
 	}
 
